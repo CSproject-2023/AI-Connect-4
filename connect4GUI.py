@@ -3,6 +3,13 @@ from numpy.core.fromnumeric import size
 import pygame
 import sys
 import math
+from computer import get_computer_decision,COMPUTER_VALUE, PLAYER_VALUE
+
+
+PLAYER_TURN= 0
+COMPUTER_TURN= 1
+
+
 ROW_COUNT=6
 COLUMN_COUNT=7
 BLUE=(0,0,255)
@@ -13,7 +20,7 @@ YELLOW=(255,255,0)
 alpha_beta=False
 clicked=False
 def create_board():
-    board=np.zeros((ROW_COUNT,COLUMN_COUNT))
+    board=np.zeros((ROW_COUNT,COLUMN_COUNT), dtype=np.uint8)
     return board
 
 def drop_piece(board,col,row,piece):
@@ -103,6 +110,7 @@ while not clicked:
 draw_board(board)
 pygame.display.update()
 
+posX= 0
 while not game_over:
     if turn == 0:
         pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
@@ -126,22 +134,22 @@ while not game_over:
         if event.type==pygame.MOUSEBUTTONDOWN:
             
             #player 1 turn 
-            if turn ==0:
+            if turn ==PLAYER_TURN:
                 posX=event.pos[0]
                 col=int(math.floor(posX/SQUARESIZE))
 
                 
                 if is_valid_location(board,col):
                     row=get_next_open_row(board,col)
-                    drop_piece(board,col,row,1)
+                    drop_piece(board,col,row,PLAYER_VALUE)
 
 
-            else :
+            else : # Computer Turn
                 posX=event.pos[0]
-                col=int(math.floor(posX/SQUARESIZE))
+                col=get_computer_decision(np.flip(board,0))
                 if is_valid_location(board,col):
                     row=get_next_open_row(board,col)
-                    drop_piece(board,col,row,2)
+                    drop_piece(board,col,row,COMPUTER_VALUE)
 
 
             print_board(board)

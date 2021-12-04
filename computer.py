@@ -4,6 +4,10 @@ import library as lib
 from tree import TreeNode,draw_tree
 from heuristic import heuristic
 
+
+PLAYER_VALUE=1
+COMPUTER_VALUE= 2
+
 COLUMN_INDEX= 0
 SCORE_INDEX=1
 MAX_LEVEL= 4
@@ -20,9 +24,9 @@ def get_computer_decision(board_state:np.ndarray) -> np.int8:
     return: column position
     """
     tree_list= [[] for i in range(MAX_LEVEL)]
-    pos=maximize(board_state.copy(),0,None)[COLUMN_INDEX]
+    pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE)[COLUMN_INDEX]
     draw_tree(tree_list)
-    return 
+    return  pos
 
 
 def get_children(state,value) :
@@ -43,7 +47,7 @@ def get_children(state,value) :
             
     return answer
 
-def maximize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = None, beta:float= None) -> tuple:
+def maximize(state:np.ndarray, level:int,parent_node:TreeNode,value ,alpha:float = None, beta:float= None) -> tuple:
     global tree_list
     node= TreeNode(-1,parent_node)
     tree_list.append(node)
@@ -60,13 +64,13 @@ def maximize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = Non
 
     (max_pos, max_score)= (-1,-math.inf)
     
-    state_children= get_children(state)
+    state_children= get_children(state,value)
     
     for i in range (len(state_children)):
         if state_children[i] is None:
             continue
 
-        score= minimize(state_children[i], level+1, alpha, beta)[SCORE_INDEX]
+        score= minimize(state_children[i], level+1, node,PLAYER_VALUE if value ==COMPUTER_VALUE else COMPUTER_VALUE,alpha, beta)[SCORE_INDEX]
 
         if score > max_score:
             max_score= score
@@ -82,7 +86,7 @@ def maximize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = Non
     return (max_pos,max_score) 
 
 
-def minimize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = None, beta:float= None) -> tuple:
+def minimize(state:np.ndarray, level:int,parent_node:TreeNode, value,alpha:float = None, beta:float= None) -> tuple:
     global tree_list
     node= TreeNode(-1,parent_node)
     tree_list.append(node)
@@ -99,13 +103,13 @@ def minimize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = Non
 
     (min_pos, min_score)= (-1,math.inf)
     
-    state_children= get_children(state)
+    state_children= get_children(state,value)
     
     for i in range (len(state_children)):
         if state_children[i] is None:
             continue
 
-        score= maximize(state_children[i], level+1, alpha, beta)[SCORE_INDEX]
+        score= maximize(state_children[i], level+1,node,PLAYER_VALUE if value ==COMPUTER_VALUE else COMPUTER_VALUE, alpha, beta)[SCORE_INDEX]
 
         if score < min_score:
             min_score= score
