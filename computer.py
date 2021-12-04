@@ -10,7 +10,7 @@ COMPUTER_VALUE= 2
 
 COLUMN_INDEX= 0
 SCORE_INDEX=1
-MAX_LEVEL= 4
+MAX_LEVEL= 1
 h = heuristic(8, 8, [0, 1, 3, 6, 10])
 
 tree_list= None
@@ -23,7 +23,7 @@ def get_computer_decision(board_state:np.ndarray) -> np.int8:
     We need to get the column which the computer choose
     return: column position
     """
-    tree_list= [[] for i in range(MAX_LEVEL)]
+    tree_list= [[] for i in range(MAX_LEVEL+1)]
     pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE)[COLUMN_INDEX]
     draw_tree(tree_list)
     return  pos
@@ -35,8 +35,8 @@ def get_children(state,value) :
     for  i in range(8):
         child=np.copy(state)
         for  j in range(8):
-            if child[i][j]==0 :
-                child[i][j]= value
+            if child[j][i]==0 :
+                child[j][i]= value
                 temp=False
                 break
         if temp==True :
@@ -50,7 +50,8 @@ def get_children(state,value) :
 def maximize(state:np.ndarray, level:int,parent_node:TreeNode,value ,alpha:float = None, beta:float= None) -> tuple:
     global tree_list
     node= TreeNode(-1,parent_node)
-    tree_list.append(node)
+    # print(level)
+    tree_list[level].append(node)
 
     if level == MAX_LEVEL:
         score= h.solve(state) #Calculating Objective Function
@@ -89,7 +90,8 @@ def maximize(state:np.ndarray, level:int,parent_node:TreeNode,value ,alpha:float
 def minimize(state:np.ndarray, level:int,parent_node:TreeNode, value,alpha:float = None, beta:float= None) -> tuple:
     global tree_list
     node= TreeNode(-1,parent_node)
-    tree_list.append(node)
+    # print(level)
+    tree_list[level].append(node)
 
     if level == MAX_LEVEL:
         score= h.solve(state)

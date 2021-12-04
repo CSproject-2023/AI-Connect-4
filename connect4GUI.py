@@ -10,8 +10,8 @@ PLAYER_TURN= 0
 COMPUTER_TURN= 1
 
 
-ROW_COUNT=6
-COLUMN_COUNT=7
+ROW_COUNT=8
+COLUMN_COUNT=8
 BLUE=(0,0,255)
 BLACK=(0,0,0)
 RED=(255,0,0)
@@ -65,7 +65,7 @@ turn =0
 
 pygame.init()
 
-SQUARESIZE=100 #size of each square =100px
+SQUARESIZE=80 #size of each square =100px
 
 width=COLUMN_COUNT*SQUARESIZE
 hight=(ROW_COUNT+1)*SQUARESIZE
@@ -143,19 +143,17 @@ while not game_over:
                     row=get_next_open_row(board,col)
                     drop_piece(board,col,row,PLAYER_VALUE)
 
+                    col=get_computer_decision(np.flip(board,0))
+                    if is_valid_location(board,col):   
+                        row=get_next_open_row(board,col)
+                        drop_piece(board,col,row,COMPUTER_VALUE)
+                    else:
+                        sys.exit()
 
-            else : # Computer Turn
-                posX=event.pos[0]
-                col=get_computer_decision(np.flip(board,0))
-                if is_valid_location(board,col):
-                    row=get_next_open_row(board,col)
-                    drop_piece(board,col,row,COMPUTER_VALUE)
 
 
             print_board(board)
-            draw_board(board)
-            turn+=1
-            turn =turn%2               
+            draw_board(board)         
 
             #player 2 turn 
 

@@ -8,10 +8,15 @@ class TreeNode:
         self.x= 0
         self.children=[]
 
+    def __str__(self) -> str:
+        return f'Score:{self.score}'
+
 def draw_tree(tree_list:list): #List of levels
     #First we get maxLevel containing nodes.
+
     max_height= 0
     for i in range(len(tree_list)):
+        print(len(tree_list[i]))
         if len(tree_list[i]):
             max_height=i
     print(f'Max is {max_height}')
@@ -32,7 +37,7 @@ def draw_tree(tree_list:list): #List of levels
             x= np.average(node.children)
             print(node.children)
             plt.scatter(x,max_height - i +1, color='red')
-            plt.annotate(f"{node.score}", (x,max_height - i +1),color='blue')
+            plt.annotate(f"{node.score}", (x,max_height - i +1),color='blue' , xytext= (x-1, max_height-i))
 
             node.x=x
             if node.parent is not None:
