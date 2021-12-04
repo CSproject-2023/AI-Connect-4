@@ -1,25 +1,38 @@
 import numpy as np
 import math
 import library as lib
+from tree import TreeNode,draw_tree
 
 COLUMN_INDEX= 0
 SCORE_INDEX=1
 MAX_LEVEL= 4
 
+tree_list= None
 def get_computer_decision(board_state:np.ndarray) -> np.int8:
+    global tree_list
     """
     We need to get the column which the computer choose
     return: column position
     """
-    return maximize(board_state.copy())[COLUMN_INDEX]
+    tree_list= [[] for i in range(MAX_LEVEL)]
+    pos=maximize(board_state.copy(),0,None)[COLUMN_INDEX]
+    draw_tree(tree_list)
+    return 
 
-def maximize(state:np.ndarray, level:int, alpha:float = None, beta:float= None) -> tuple:
+def maximize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = None, beta:float= None) -> tuple:
+    global tree_list
+    node= TreeNode(-1,parent_node)
+    tree_list.append(node)
 
     if level == MAX_LEVEL:
-        return (-1,compute_objective_function(state)) 
+        score= compute_objective_function(state)
+        node.score=score
+        return (-1,score) 
     
     if lib.is_state_complete(state):
-        return (-1, get_score(state)) #get_score needs to be identified (What does it return indeed)
+        score=get_score(state) #get_score needs to be identified (What does it return indeed)
+        node.score=score
+        return (-1,score)
 
     (max_pos, max_score)= (-1,-math.inf)
     
@@ -33,6 +46,7 @@ def maximize(state:np.ndarray, level:int, alpha:float = None, beta:float= None) 
 
         if score > max_score:
             max_score= score
+            node.score= score
             max_pos= i
         
         if alpha is not None and beta is not None:
@@ -45,12 +59,19 @@ def maximize(state:np.ndarray, level:int, alpha:float = None, beta:float= None) 
 
 
 def minimize(state:np.ndarray, level:int, alpha:float = None, beta:float= None) -> tuple:
+    global tree_list
+    node= TreeNode(-1,parent_node)
+    tree_list.append(node)
 
     if level == MAX_LEVEL:
-        return (-1,compute_objective_function(state)) 
+        score= compute_objective_function(state)
+        node.score=score
+        return (-1,score) 
     
     if lib.is_state_complete(state):
-        return (-1, get_score(state)) #get_score needs to be identified (What does it return indeed)
+        score=get_score(state) #get_score needs to be identified (What does it return indeed)
+        node.score=score
+        return (-1,score)
 
     (min_pos, min_score)= (-1,math.inf)
     
@@ -64,6 +85,7 @@ def minimize(state:np.ndarray, level:int, alpha:float = None, beta:float= None) 
 
         if score < min_score:
             min_score= score
+            node.score= score
             min_pos= i
         
         if alpha is not None and beta is not None:
