@@ -64,9 +64,15 @@ screen=pygame.display.set_mode(size)
 draw_board(board)
 pygame.display.update()
 myfont = pygame.font.SysFont("monospace", 60)
+posX= 0
 while not game_over:
 
-
+    if turn == 0:
+        pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
+    else :
+        pygame.draw.circle(screen, YELLOW, (posX, int(SQUARESIZE/2)), radius)
+    pygame.display.update()
+    
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             sys.exit()
@@ -77,7 +83,8 @@ while not game_over:
             if turn == 0:
                 pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
             else :
-                pygame.draw.circle(screen, YELLOW, (posX, int(SQUARESIZE/2)), radius)    
+                pygame.draw.circle(screen, YELLOW, (posX, int(SQUARESIZE/2)), radius)
+            
         pygame.display.update()            
  			   
         if event.type==pygame.MOUSEBUTTONDOWN:

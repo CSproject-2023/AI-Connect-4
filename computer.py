@@ -41,8 +41,7 @@ def get_children(state,value) :
             answer.append(child)
         temp=True  
             
-
-    return answergit
+    return answer
 
 def maximize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = None, beta:float= None) -> tuple:
     global tree_list
@@ -50,7 +49,7 @@ def maximize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = Non
     tree_list.append(node)
 
     if level == MAX_LEVEL:
-        score= h.solve(state)
+        score= h.solve(state) #Calculating Objective Function
         node.score=score
         return (-1,score) 
     
@@ -83,7 +82,7 @@ def maximize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = Non
     return (max_pos,max_score) 
 
 
-def minimize(state:np.ndarray, level:int, alpha:float = None, beta:float= None) -> tuple:
+def minimize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = None, beta:float= None) -> tuple:
     global tree_list
     node= TreeNode(-1,parent_node)
     tree_list.append(node)
