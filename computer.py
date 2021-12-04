@@ -2,10 +2,12 @@ import numpy as np
 import math
 import library as lib
 from tree import TreeNode,draw_tree
+from heuristic import heuristic
 
 COLUMN_INDEX= 0
 SCORE_INDEX=1
 MAX_LEVEL= 4
+h = heuristic(8, 8, [0, 1, 3, 6, 10])
 
 tree_list= None
 def get_computer_decision(board_state:np.ndarray) -> np.int8:
@@ -25,7 +27,7 @@ def maximize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = Non
     tree_list.append(node)
 
     if level == MAX_LEVEL:
-        score= compute_objective_function(state)
+        score= h.solve(state)
         node.score=score
         return (-1,score) 
     
@@ -64,7 +66,7 @@ def minimize(state:np.ndarray, level:int, alpha:float = None, beta:float= None) 
     tree_list.append(node)
 
     if level == MAX_LEVEL:
-        score= compute_objective_function(state)
+        score= h.solve(state)
         node.score=score
         return (-1,score) 
     
