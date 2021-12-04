@@ -10,6 +10,9 @@ MAX_LEVEL= 4
 h = heuristic(8, 8, [0, 1, 3, 6, 10])
 
 tree_list= None
+
+
+
 def get_computer_decision(board_state:np.ndarray) -> np.int8:
     global tree_list
     """
@@ -21,13 +24,32 @@ def get_computer_decision(board_state:np.ndarray) -> np.int8:
     draw_tree(tree_list)
     return 
 
+
+def get_children(state,value) :
+    answer =[]
+    temp=True
+    for  i in range(8):
+        child=np.copy(state)
+        for  j in range(8):
+            if child[i][j]==0 :
+                child[i][j]= value
+                temp=False
+                break
+        if temp==True :
+            answer.append(None) 
+        else :
+            answer.append(child)
+        temp=True  
+            
+    return answer
+
 def maximize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = None, beta:float= None) -> tuple:
     global tree_list
     node= TreeNode(-1,parent_node)
     tree_list.append(node)
 
     if level == MAX_LEVEL:
-        score= h.solve(state)
+        score= h.solve(state) #Calculating Objective Function
         node.score=score
         return (-1,score) 
     
@@ -60,7 +82,7 @@ def maximize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = Non
     return (max_pos,max_score) 
 
 
-def minimize(state:np.ndarray, level:int, alpha:float = None, beta:float= None) -> tuple:
+def minimize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = None, beta:float= None) -> tuple:
     global tree_list
     node= TreeNode(-1,parent_node)
     tree_list.append(node)

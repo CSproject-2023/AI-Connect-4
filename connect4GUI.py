@@ -102,7 +102,7 @@ while not clicked:
 
 draw_board(board)
 pygame.display.update()
-posX=0
+
 while not game_over:
     if turn == 0:
         pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
