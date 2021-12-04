@@ -8,7 +8,10 @@ COLUMN_COUNT=7
 BLUE=(0,0,255)
 BLACK=(0,0,0)
 RED=(255,0,0)
+GREEN=(0,255,0)
 YELLOW=(255,255,0)
+alpha_beta=False
+clicked=False
 def create_board():
     board=np.zeros((ROW_COUNT,COLUMN_COUNT))
     return board
@@ -47,7 +50,8 @@ def draw_board(board):
 				pygame.draw.circle(screen, YELLOW, (int(c*SQUARESIZE+SQUARESIZE/2), hight-int(r*SQUARESIZE+SQUARESIZE/2)), radius)
 	pygame.display.update()
 
-
+def draw_first_sreen():
+    pass
 board=create_board()
 game_over=False
 turn =0
@@ -60,12 +64,51 @@ width=COLUMN_COUNT*SQUARESIZE
 hight=(ROW_COUNT+1)*SQUARESIZE
 size=(width,hight)
 radius=int(SQUARESIZE/2)
+
 screen=pygame.display.set_mode(size)
+
+default_button = pygame.Rect(170, 200, 100, 50) #default button
+alpha_beta_button= pygame.Rect(370, 200, 200, 50) #alpha_beta button
+font = pygame.font.Font('freesansbold.ttf', 16)
+
+text1 = font.render('Default', True, GREEN, BLUE)
+text2 = font.render('with alpha beta pruning', True, GREEN, BLUE)
+textRect1 = text1.get_rect()
+textRect2 = text2.get_rect()
+textRect1.center = (215, 225)
+textRect2.center = (470 , 225)
+while not clicked:
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = event.pos  # gets mouse position
+
+            # checks if mouse position is over the button
+
+            if default_button.collidepoint(mouse_pos):
+                clicked=True
+            if alpha_beta_button.collidepoint(mouse_pos):
+                clicked=True    
+                alpha_beta=True
+
+        pygame.draw.rect(screen, [255, 0, 0], default_button)  # draw button
+        pygame.draw.rect(screen, [255, 0, 0], alpha_beta_button)  # draw button
+        screen.blit(text1, textRect1)
+        screen.blit(text2, textRect2)
+        pygame.display.update()
+
 draw_board(board)
 pygame.display.update()
-myfont = pygame.font.SysFont("monospace", 60)
+posX=0
 while not game_over:
-
+    if turn == 0:
+        pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
+    else :
+        pygame.draw.circle(screen, YELLOW, (posX, int(SQUARESIZE/2)), radius)
+    pygame.display.update()
 
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
