@@ -8,6 +8,9 @@ SCORE_INDEX=1
 MAX_LEVEL= 4
 
 tree_list= None
+
+
+
 def get_computer_decision(board_state:np.ndarray) -> np.int8:
     global tree_list
     """
@@ -18,6 +21,26 @@ def get_computer_decision(board_state:np.ndarray) -> np.int8:
     pos=maximize(board_state.copy(),0,None)[COLUMN_INDEX]
     draw_tree(tree_list)
     return 
+
+
+def get_children(state,value) :
+    answer =[]
+    temp=True
+    for  i in range(8):
+        child=np.copy(state)
+        for  j in range(8):
+            if child[i][j]==0 :
+                child[i][j]= value
+                temp=False
+                break
+        if temp==True :
+            answer.append(None) 
+        else :
+            answer.append(child)
+        temp=True  
+            
+
+    return answergit
 
 def maximize(state:np.ndarray, level:int,parent_node:TreeNode, alpha:float = None, beta:float= None) -> tuple:
     global tree_list
