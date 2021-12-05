@@ -23,7 +23,7 @@ def draw_tree(tree_list:list): #List of levels
 
     ##Now we plot the bottom first
     bottom_nodes_length= len(tree_list[max_height])
-    x_s= np.arange(1,bottom_nodes_length)
+    x_s= np.arange(1,bottom_nodes_length, 1)
     plt.scatter(x_s,np.ones_like(x_s))
     count= 1
     for node in tree_list[max_height]:
@@ -50,11 +50,14 @@ def draw_tree(tree_list:list): #List of levels
         plt.scatter(x_s,np.ones_like(x_s) * (max_height - i +1) , color='red')
 
         for node in tree_list[i]:
-            plt.annotate(f"{node.score}", (node.x,max_height - i +1),color='blue' )#, xytext= (node.x-1, max_height-i))
+            plt.annotate(f"{node.score}", (node.x,max_height - i +1),color='blue' )
             
             ##Now connect with children
             for child in node.children:
                 plt.plot([node.x,child],[max_height - i +1,max_height - i ] , color='black')
+    fig = plt.gcf()
+    fig.set_size_inches(18.5, 10.5)
+    # plt.xlim(0,500)
     plt.show()
 
 if __name__ == '__main__':

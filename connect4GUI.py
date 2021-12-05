@@ -145,7 +145,7 @@ while not game_over:
                     row=get_next_open_row(board,col)
                     drop_piece(board,col,row,PLAYER_VALUE)
 
-                    col=get_computer_decision(np.flip(board,0))
+                    col=get_computer_decision(np.flip(board,0) , alpha_beta)
                     if is_valid_location(board,col):   
                         row=get_next_open_row(board,col)
                         drop_piece(board,col,row,COMPUTER_VALUE)

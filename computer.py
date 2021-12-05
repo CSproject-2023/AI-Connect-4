@@ -17,15 +17,18 @@ tree_list= None
 
 
 
-def get_computer_decision(board_state:np.ndarray) -> np.int8:
+def get_computer_decision(board_state:np.ndarray , is_with_pruning) -> np.int8:
     global tree_list
     """
     We need to get the column which the computer choose
     return: column position
     """
     tree_list= [[] for i in range(MAX_LEVEL+1)]
-    pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE)[COLUMN_INDEX]
-    # draw_tree(tree_list)
+    if is_with_pruning:
+        pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE,-1*math.inf, math.inf)[COLUMN_INDEX]
+    else:
+        pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE)[COLUMN_INDEX]
+    draw_tree(tree_list)
     return  pos
 
 
