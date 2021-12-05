@@ -22,9 +22,12 @@ def draw_tree(tree_list:list): #List of levels
     print(f'Max is {max_height}')
 
     ##Now we plot the bottom first
+    bottom_nodes_length= len(tree_list[max_height])
+    x_s= np.arange(1,bottom_nodes_length)
+    plt.scatter(x_s,np.ones_like(x_s))
     count= 1
     for node in tree_list[max_height]:
-        plt.scatter(count,1, color='red')
+        # plt.scatter(count,1, color='red')
         plt.annotate(f"{node.score}", (count, 1), color='blue')
         node.x= count
         count +=1
@@ -33,15 +36,21 @@ def draw_tree(tree_list:list): #List of levels
     ## Now next level
 
     for i in range(max_height-1,-1,-1):
-        for node in tree_list[i]:
-            x= np.average(node.children)
-            print(node.children)
-            plt.scatter(x,max_height - i +1, color='red')
-            plt.annotate(f"{node.score}", (x,max_height - i +1),color='blue' , xytext= (x-1, max_height-i))
+        x_s= np.zeros(len(tree_list[i]))
 
-            node.x=x
-            if node.parent is not None:
-                node.parent.children.append(node.x)
+        for c in range(len(tree_list[i])):
+            point= np.average(tree_list[i][c].children)
+            x_s[c]=point
+            tree_list[i][c].x=point
+
+            if tree_list[i][c].parent is not None:
+                tree_list[i][c].parent.children.append(point)
+
+
+        plt.scatter(x_s,np.ones_like(x_s) * (max_height - i +1) , color='red')
+
+        for node in tree_list[i]:
+            plt.annotate(f"{node.score}", (node.x,max_height - i +1),color='blue' )#, xytext= (node.x-1, max_height-i))
             
             ##Now connect with children
             for child in node.children:
