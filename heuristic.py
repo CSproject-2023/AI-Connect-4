@@ -5,6 +5,7 @@ class heuristic:
     def __init__(self, width=8, length=8, v=[0, 1, 3, 6, 10]):
         self.width = width
         self.length = length
+        v  = [ -i for i in v]
         zero = [0, 0, 0, 0]
         self.val = [v, [-v[1]] + zero, [-v[2]] + zero, [-v[3]] + zero, [-v[4]] + zero]
 
@@ -15,13 +16,13 @@ class heuristic:
             for j in range(self.length):
                 if i + 3 < self.width: self.update_points(state, i, j, 1, 0)
                 if i + 3 < self.width and j + 3 < self.length: self.update_points(state, i, j, 1, 1)
-                if i + 3 < self.width and j - 3 < self.length: self.update_points(state, i, j, 1, -1)
+                if i + 3 < self.width and j - 3 >= 0: self.update_points(state, i, j, 1, -1)
                 if j + 3 < self.length: self.update_points(state, i, j, 0, 1)
         if self.tot_available_4 == 0:return 0
         elif self.p1_available_4 == 0: return 1
         elif self.p2_available_4 == 0: return -1
         else:
-            return tanh((self.total_score / (self.tot_available_4 * self.val[0][4])) + \
+            return tanh((self.total_score / (self.tot_available_4 * -self.val[0][4])) + \
                         floor(self.no_4_won_by1 / (self.p2_available_4 + 0.001)) * 100 + floor(self.no_4_won_by2 / (self.p1_available_4 + 0.001)) * -100)
 
     def update_points(self, state, i, j, x, y):
