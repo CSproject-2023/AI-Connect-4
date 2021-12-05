@@ -57,7 +57,6 @@ def draw_tree(tree_list:list): #List of levels
                 plt.plot([node.x,child],[max_height - i +1,max_height - i ] , color='black')
     fig = plt.gcf()
     fig.set_size_inches(18.5, 10.5)
-    # plt.xlim(0,500)
     plt.show()
 
 if __name__ == '__main__':

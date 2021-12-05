@@ -44,19 +44,27 @@ def winning_move(board,piece):
     for c in range (COLUMN_COUNT):
         pass
 
-def draw_board(board):
-	for c in range(COLUMN_COUNT):
-		for r in range(ROW_COUNT):
-			pygame.draw.rect(screen, BLUE, (c*SQUARESIZE, r*SQUARESIZE+SQUARESIZE, SQUARESIZE, SQUARESIZE))
-			pygame.draw.circle(screen, BLACK, (int(c*SQUARESIZE+SQUARESIZE/2), int(r*SQUARESIZE+SQUARESIZE+SQUARESIZE/2)), radius)
-	
-	for c in range(COLUMN_COUNT):
-		for r in range(ROW_COUNT):		
-			if board[r][c] == 1:
-				pygame.draw.circle(screen, RED, (int(c*SQUARESIZE+SQUARESIZE/2), hight-int(r*SQUARESIZE+SQUARESIZE/2)), radius)
-			elif board[r][c] == 2: 
-				pygame.draw.circle(screen, YELLOW, (int(c*SQUARESIZE+SQUARESIZE/2), hight-int(r*SQUARESIZE+SQUARESIZE/2)), radius)
-	pygame.display.update()
+def draw_board(board,player_score,agent_score):
+    for c in range(COLUMN_COUNT):
+        for r in range(ROW_COUNT):
+            pygame.draw.rect(screen, BLUE, (c*SQUARESIZE, r*SQUARESIZE+SQUARESIZE, SQUARESIZE, SQUARESIZE))
+            pygame.draw.circle(screen, BLACK, (int(c*SQUARESIZE+SQUARESIZE/2), int(r*SQUARESIZE+SQUARESIZE+SQUARESIZE/2)), radius)
+    
+    for c in range(COLUMN_COUNT):
+        for r in range(ROW_COUNT):        
+            if board[r][c] == 1:
+                pygame.draw.circle(screen, RED, (int(c*SQUARESIZE+SQUARESIZE/2), hight-int(r*SQUARESIZE+SQUARESIZE/2)), radius)
+            elif board[r][c] == 2: 
+                pygame.draw.circle(screen, YELLOW, (int(c*SQUARESIZE+SQUARESIZE/2), hight-int(r*SQUARESIZE+SQUARESIZE/2)), radius)
+    text_player_score = font.render('Player Score : '+str(player_score), True, GREEN, BLUE)
+    text_agent_score = font.render('Agent Score : '+ str(agent_score), True, GREEN, BLUE)
+    textRect_player_score = text_player_score.get_rect()
+    textRect_agent_score = text_agent_score.get_rect()
+    textRect_player_score.center = (140, 580)
+    textRect_agent_score.center = (320 , 580)
+    screen.blit(text_player_score, textRect_player_score)
+    screen.blit(text_agent_score, textRect_agent_score)
+    pygame.display.update()
 
 def draw_first_sreen():
     pass
@@ -66,25 +74,25 @@ turn =0
 
 pygame.init()
 
-SQUARESIZE=80 #size of each square =100px
+SQUARESIZE=60 #size of each square =100px
 
 width=COLUMN_COUNT*SQUARESIZE
 hight=(ROW_COUNT+1)*SQUARESIZE
-size=(width,hight)
+size=(width,hight+75)
 radius=int(SQUARESIZE/2)
 
 screen=pygame.display.set_mode(size)
 
-default_button = pygame.Rect(170, 200, 100, 50) #default button
-alpha_beta_button= pygame.Rect(370, 200, 200, 50) #alpha_beta button
+default_button = pygame.Rect(90, 200, 100, 50) #default button
+alpha_beta_button= pygame.Rect(220, 200, 200, 50) #alpha_beta button
 font = pygame.font.Font('freesansbold.ttf', 16)
 
 text1 = font.render('Default', True, GREEN, BLUE)
 text2 = font.render('with alpha beta pruning', True, GREEN, BLUE)
 textRect1 = text1.get_rect()
 textRect2 = text2.get_rect()
-textRect1.center = (215, 225)
-textRect2.center = (470 , 225)
+textRect1.center = (140, 225)
+textRect2.center = (320 , 225)
 while not clicked:
     
     for event in pygame.event.get():
@@ -108,7 +116,7 @@ while not clicked:
         screen.blit(text2, textRect2)
         pygame.display.update()
 
-draw_board(board)
+draw_board(board,0,0)
 pygame.display.update()
 
 posX= 0
@@ -132,7 +140,7 @@ while not game_over:
             else :
                 pygame.draw.circle(screen, YELLOW, (posX, int(SQUARESIZE/2)), radius)    
         pygame.display.update()            
- 			   
+                
         if event.type==pygame.MOUSEBUTTONDOWN:
             
             #player 1 turn 
@@ -155,7 +163,7 @@ while not game_over:
 
 
             print_board(board)
-            draw_board(board)    
+            draw_board(board,0,0)    
             if lb.is_state_complete(board):
                 game_over= True     
 
