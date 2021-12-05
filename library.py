@@ -8,6 +8,6 @@ import numpy as np
 
 #is_board_completed
 def is_state_complete(board:np.ndarray):
-    return  True if not len(board[board!=0]) else False
+    return  True if  len(board[board==0]) == 0 else False
 
 

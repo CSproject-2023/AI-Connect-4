@@ -10,7 +10,7 @@ COMPUTER_VALUE= 2
 
 COLUMN_INDEX= 0
 SCORE_INDEX=1
-MAX_LEVEL= 1
+MAX_LEVEL= 4
 h = heuristic(8, 8, [0, 1, 3, 6, 10])
 
 tree_list= None
@@ -25,7 +25,7 @@ def get_computer_decision(board_state:np.ndarray) -> np.int8:
     """
     tree_list= [[] for i in range(MAX_LEVEL+1)]
     pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE)[COLUMN_INDEX]
-    draw_tree(tree_list)
+    # draw_tree(tree_list)
     return  pos
 
 

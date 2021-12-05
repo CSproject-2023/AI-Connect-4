@@ -4,6 +4,7 @@ import pygame
 import sys
 import math
 from computer import get_computer_decision,COMPUTER_VALUE, PLAYER_VALUE
+import library as lb
 
 
 PLAYER_TURN= 0
@@ -112,6 +113,7 @@ pygame.display.update()
 
 posX= 0
 while not game_over:
+    
     if turn == 0:
         pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
     else :
@@ -153,7 +155,9 @@ while not game_over:
 
 
             print_board(board)
-            draw_board(board)         
+            draw_board(board)    
+            if lb.is_state_complete(board):
+                game_over= True     
 
             #player 2 turn 
 
