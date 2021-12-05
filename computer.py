@@ -34,7 +34,7 @@ def get_children(state,value) :
     temp=True
     for  i in range(8):
         child=np.copy(state)
-        for  j in range(8):
+        for  j in reversed(range(8)):
             if child[j][i]==0 :
                 child[j][i]= value
                 temp=False
