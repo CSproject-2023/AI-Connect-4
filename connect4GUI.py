@@ -128,20 +128,19 @@ while True:
         pygame.draw.circle(screen, YELLOW, (posX, int(SQUARESIZE/2)), radius)
     pygame.display.update()
     if game_over:
-        if lb.get_score(board,PLAYER_VALUE)>lb.get_score(board,COMPUTER_VALUE):
-            text_winner = font.render('Player Win  : '+str(lb.get_score(board,PLAYER_VALUE)), True, GREEN, BLUE)
+        if lb.get_score(np.flip(board,0),PLAYER_VALUE)>lb.get_score(np.flip(board,0),COMPUTER_VALUE):
+            text_winner = font.render('Player Win  : '+str(lb.get_score(np.flip(board,0),PLAYER_VALUE)), True, GREEN, BLUE)
         else:
-            text_winner = font.render('Agent Win  : '+str(lb.get_score(board,COMPUTER_VALUE)), True, GREEN, BLUE)
+            text_winner = font.render('Agent Win  : '+str(lb.get_score(np.flip(board,0),COMPUTER_VALUE)), True, GREEN, BLUE)
         textRect_winner = text_winner.get_rect()
-        textRect_winner.center = (240, 40)
+        textRect_winner.center = (240, 30)
         screen.blit(text_winner, textRect_winner)
-        pygame.display.update()
+    pygame.display.update()
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             sys.exit()
             
-        if event.type==pygame.MOUSEMOTION:
-            pygame.display.update()
+        if event.type==pygame.MOUSEMOTION and not game_over:
             pygame.draw.rect(screen, BLACK, (0,0, width, SQUARESIZE))
             posX=event.pos[0]
             if turn == 0:
@@ -172,9 +171,9 @@ while True:
 
 
             print_board(board)
-            draw_board(board,lb.get_score(board,PLAYER_VALUE),lb.get_score(board,COMPUTER_VALUE))    
+            draw_board(board,lb.get_score(np.flip(board,0),PLAYER_VALUE),lb.get_score(np.flip(board,0),COMPUTER_VALUE))    
 
-            if lb.is_state_complete(board):
+            if lb.is_state_complete(np.flip(board,0)):
                 game_over = True
 
 
