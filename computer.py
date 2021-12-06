@@ -28,7 +28,7 @@ def get_computer_decision(board_state:np.ndarray , is_with_pruning) -> np.int8:
         pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE,-1*math.inf, math.inf)[COLUMN_INDEX]
     else:
         pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE)[COLUMN_INDEX]
-    draw_tree(tree_list)
+    # draw_tree(tree_list)
     return  pos
 
 
@@ -62,7 +62,7 @@ def maximize(state:np.ndarray, level:int,parent_node:TreeNode,value ,alpha:float
         return (-1,score) 
     
     if lib.is_state_complete(state):
-        score=get_score(state) #get_score needs to be identified (What does it return indeed)
+        score=lib.get_score(state,COMPUTER_VALUE) - lib.get_score(state,PLAYER_VALUE) #get_score needs to be identified (What does it return indeed)
         node.score=score
         return (-1,score)
 
@@ -102,9 +102,10 @@ def minimize(state:np.ndarray, level:int,parent_node:TreeNode, value,alpha:float
         return (-1,score) 
     
     if lib.is_state_complete(state):
-        score=get_score(state) #get_score needs to be identified (What does it return indeed)
+        score=lib.get_score(state,COMPUTER_VALUE) - lib.get_score(state,PLAYER_VALUE) #get_score needs to be identified (What does it return indeed)
         node.score=score
         return (-1,score)
+
 
     (min_pos, min_score)= (-1,math.inf)
     

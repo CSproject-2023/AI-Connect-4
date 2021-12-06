@@ -120,9 +120,9 @@ draw_board(board,0,0)
 pygame.display.update()
 
 posX= 0
-while not game_over:
-    
-    if turn == 0:
+while True:
+
+    if turn == 0 and not game_over:
         pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
     else :
         pygame.draw.circle(screen, YELLOW, (posX, int(SQUARESIZE/2)), radius)
@@ -131,6 +131,8 @@ while not game_over:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             sys.exit()
+        if game_over:
+            break
         if event.type==pygame.MOUSEMOTION:
             pygame.display.update()
             pygame.draw.rect(screen, BLACK, (0,0, width, SQUARESIZE))
@@ -163,9 +165,9 @@ while not game_over:
 
 
             print_board(board)
-            draw_board(board,0,0)    
-            if lb.is_state_complete(board):
-                game_over= True     
+            draw_board(board,lb.get_score(board,PLAYER_VALUE),lb.get_score(board,COMPUTER_VALUE))    
 
-            #player 2 turn 
+            if lb.is_state_complete(board):
+                game_over = True
+
 
