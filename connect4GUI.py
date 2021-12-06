@@ -124,15 +124,22 @@ while True:
 
     if turn == 0 and not game_over:
         pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
-    else :
+    elif turn == 1 and not game_over:
         pygame.draw.circle(screen, YELLOW, (posX, int(SQUARESIZE/2)), radius)
     pygame.display.update()
-
+    if game_over:
+        if lb.get_score(board,PLAYER_VALUE)>lb.get_score(board,COMPUTER_VALUE):
+            text_winner = font.render('Player Win  : '+str(lb.get_score(board,PLAYER_VALUE)), True, GREEN, BLUE)
+        else:
+            text_winner = font.render('Agent Win  : '+str(lb.get_score(board,COMPUTER_VALUE)), True, GREEN, BLUE)
+        textRect_winner = text_winner.get_rect()
+        textRect_winner.center = (240, 40)
+        screen.blit(text_winner, textRect_winner)
+        pygame.display.update()
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             sys.exit()
-        if game_over:
-            break
+            
         if event.type==pygame.MOUSEMOTION:
             pygame.display.update()
             pygame.draw.rect(screen, BLACK, (0,0, width, SQUARESIZE))
