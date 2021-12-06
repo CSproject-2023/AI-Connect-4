@@ -128,6 +128,7 @@ while True:
         pygame.draw.circle(screen, YELLOW, (posX, int(SQUARESIZE/2)), radius)
     pygame.display.update()
     if game_over:
+        pygame.draw.circle(screen,BLACK,(posX, int(SQUARESIZE/2)), radius=radius)
         if lb.get_score(np.flip(board,0),PLAYER_VALUE)>lb.get_score(np.flip(board,0),COMPUTER_VALUE):
             text_winner = font.render('Player Win  : '+str(lb.get_score(np.flip(board,0),PLAYER_VALUE)), True, GREEN, BLUE)
         else:
