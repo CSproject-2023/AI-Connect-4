@@ -34,7 +34,21 @@ def draw_tree(tree_list:list): #List of levels
 
     ##Now we plot the bottom first
     bottom_nodes_length= len(tree_list[max_height])
-    x_s= np.arange(1,2*bottom_nodes_length, 2)
+    x_s= np.ones((bottom_nodes_length,2))
+    index= 0
+    parent= None
+    currentX= 1
+    for node in tree_list[max_height]:
+        if parent is not None and node.parent != parent:
+            currentX += 4
+            parent= node.parent
+        if parent is None:
+            parent= node.parent
+        x_s[index,0]= currentX
+        node.x=currentX
+        currentX+=1
+        index+=1
+
     plt.scatter(x_s,np.ones_like(x_s), color=set_color_on_height(max_height) , label=set_label_on_height(max_height))
     count= 1
     height1= 0.8
@@ -42,10 +56,8 @@ def draw_tree(tree_list:list): #List of levels
     switch=True
     for node in tree_list[max_height]:
         # plt.scatter(count,1, color='red')
-        plt.annotate(f"{round(node.score,ROUNDING_NUM)}", (count-1,height1 if switch else height2 ), size=5,color='blue')
+        plt.annotate(f"{round(node.score,ROUNDING_NUM)}", (node.x-1,height1 if switch else height2 ), size=5,color='blue')
         switch= not switch
-        node.x= count
-        count +=2
         if node.parent is not None:
             node.parent.children.append(node.x)
     ## Now next level
