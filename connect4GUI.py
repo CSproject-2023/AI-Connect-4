@@ -133,10 +133,8 @@ pygame.display.update()
 posX= 0
 while True:
 
-    if turn == 0 and not game_over:
+    if not game_over:
         pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
-    elif turn == 1 and not game_over:
-        pygame.draw.circle(screen, YELLOW, (posX, int(SQUARESIZE/2)), radius)
     pygame.display.update()
     if game_over:
         pygame.draw.circle(screen,BLACK,(posX, int(SQUARESIZE/2)), radius=radius)
@@ -165,13 +163,7 @@ while True:
                 
         if event.type==pygame.MOUSEBUTTONDOWN:
             if tree_button.collidepoint(mouse_click):
-                if tree_show==False :
-
-                    # add the code for shown the tree
-                    tree_show=True
-                elif tree_show==True:
-                    # add the code for hide the tree
-                    tree_show=False  
+                tree_show= not tree_show
                 draw_board(board,lb.get_score(np.flip(board,0),PLAYER_VALUE),lb.get_score(np.flip(board,0),COMPUTER_VALUE),tree_show,tree_button)
                 continue 
             #player 1 turn 
@@ -184,7 +176,8 @@ while True:
                     row=get_next_open_row(board,col)
                     drop_piece(board,col,row,PLAYER_VALUE)
 
-                    col=get_computer_decision(np.flip(board,0) , alpha_beta)
+                    col=get_computer_decision(np.flip(board,0) , alpha_beta, tree_show)
+                    print(f"Tree is {tree_show}")
                     if is_valid_location(board,col):   
                         row=get_next_open_row(board,col)
                         drop_piece(board,col,row,COMPUTER_VALUE)

@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
+ROUNDING_NUM= 3
 class TreeNode:
 
     def __init__(self, score:int, parent=None):
@@ -28,7 +30,7 @@ def draw_tree(tree_list:list): #List of levels
     count= 1
     for node in tree_list[max_height]:
         # plt.scatter(count,1, color='red')
-        plt.annotate(f"{node.score}", (count, 1), color='blue')
+        plt.annotate(f"{round(node.score,ROUNDING_NUM)}", (count, 1), color='blue')
         node.x= count
         count +=1
         if node.parent is not None:
@@ -50,7 +52,7 @@ def draw_tree(tree_list:list): #List of levels
         plt.scatter(x_s,np.ones_like(x_s) * (max_height - i +1) , color='red')
 
         for node in tree_list[i]:
-            plt.annotate(f"{node.score}", (node.x,max_height - i +1),color='blue' )
+            plt.annotate(f"{round(node.score,ROUNDING_NUM)}", (node.x,max_height - i +1),color='blue' )
             
             ##Now connect with children
             for child in node.children:

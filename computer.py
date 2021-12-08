@@ -17,7 +17,7 @@ tree_list= None
 
 
 
-def get_computer_decision(board_state:np.ndarray , is_with_pruning) -> np.int8:
+def get_computer_decision(board_state:np.ndarray , is_with_pruning , show_tree:bool) -> np.int8:
     global tree_list
     """
     We need to get the column which the computer choose
@@ -28,7 +28,8 @@ def get_computer_decision(board_state:np.ndarray , is_with_pruning) -> np.int8:
         pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE,-1*math.inf, math.inf)[COLUMN_INDEX]
     else:
         pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE)[COLUMN_INDEX]
-    # draw_tree(tree_list)
+    if show_tree:
+        draw_tree(tree_list)
     return  pos
 
 
