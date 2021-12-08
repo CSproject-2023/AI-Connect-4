@@ -38,8 +38,8 @@ def get_next_open_row(board,col):
             return r
 
 
-def print_board(board):
-    print(np.flip(board,0))
+# def print_board(board):
+#     print(np.flip(board,0))
 
 def winning_move(board,piece):
     #check horizontal location for win 
@@ -177,7 +177,7 @@ while True:
                     drop_piece(board,col,row,PLAYER_VALUE)
 
                     col=get_computer_decision(np.flip(board,0) , alpha_beta, tree_show)
-                    print(f"Tree is {tree_show}")
+                    # print(f"Tree is {tree_show}")
                     if is_valid_location(board,col):   
                         row=get_next_open_row(board,col)
                         drop_piece(board,col,row,COMPUTER_VALUE)
@@ -186,7 +186,7 @@ while True:
 
 
 
-            print_board(board)
+            # print_board(board)
             draw_board(board,lb.get_score(np.flip(board,0),PLAYER_VALUE),lb.get_score(np.flip(board,0),COMPUTER_VALUE),tree_show,tree_button)    
 
             if lb.is_state_complete(np.flip(board,0)):

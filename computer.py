@@ -3,6 +3,7 @@ import math
 import library as lib
 from tree import TreeNode,draw_tree
 from heuristic import heuristic
+import time
 
 
 PLAYER_VALUE=1
@@ -10,7 +11,8 @@ COMPUTER_VALUE= 2
 
 COLUMN_INDEX= 0
 SCORE_INDEX=1
-MAX_LEVEL= 4
+MAX_LEVEL= 4 #Max level to search.
+count= 0
 h = heuristic(8, 8, [0, 1, 3, 6, 10])
 
 tree_list= None
@@ -18,16 +20,23 @@ tree_list= None
 
 
 def get_computer_decision(board_state:np.ndarray , is_with_pruning , show_tree:bool) -> np.int8:
-    global tree_list
+    global tree_list,count
     """
     We need to get the column which the computer choose
     return: column position
     """
-    tree_list= [[] for i in range(MAX_LEVEL+1)]
-    if is_with_pruning:
+    count= 0
+    tree_list= [[] for i in range(MAX_LEVEL+1)] #This list is used to plot the tree.
+    current_time= round(time.time()*1000)
+
+    if is_with_pruning: #Pruning doesn't add much code to functions, so it is a waste to make an independent function for pruning
         pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE,-1*math.inf, math.inf)[COLUMN_INDEX]
     else:
         pos=maximize(board_state.copy(),0,None, COMPUTER_VALUE)[COLUMN_INDEX]
+    
+    time_passed= round(time.time()*1000)- current_time
+    print(f'Total Expanded Nodes= {count}\t Total Time passed in MS is {time_passed}')
+
     if show_tree:
         draw_tree(tree_list)
     return  pos
@@ -52,18 +61,19 @@ def get_children(state,value) :
     return answer
 
 def maximize(state:np.ndarray, level:int,parent_node:TreeNode,value ,alpha:float = None, beta:float= None) -> tuple:
-    global tree_list
+    global tree_list,count
+    count +=1
     node= TreeNode(-1,parent_node)
     # print(level)
     tree_list[level].append(node)
 
-    if level == MAX_LEVEL:
+    if level == MAX_LEVEL: #Now get the objective function instead of searching.
         score= h.solve(state) #Calculating Objective Function
         node.score=score
         return (-1,score) 
     
-    if lib.is_state_complete(state):
-        score=lib.get_score(state,COMPUTER_VALUE) - lib.get_score(state,PLAYER_VALUE) #get_score needs to be identified (What does it return indeed)
+    if lib.is_state_complete(state): #The game is finished (No more moves).
+        score=lib.get_score(state,COMPUTER_VALUE) - lib.get_score(state,PLAYER_VALUE) 
         node.score=score
         return (-1,score)
 
@@ -82,7 +92,7 @@ def maximize(state:np.ndarray, level:int,parent_node:TreeNode,value ,alpha:float
             node.score= score
             max_pos= i
         
-        if alpha is not None and beta is not None:
+        if alpha is not None and beta is not None: ##If alpha and Beta were Nones then we are in default method.
             if max_score >= beta:
                 break
             if max_score > alpha:
@@ -90,9 +100,12 @@ def maximize(state:np.ndarray, level:int,parent_node:TreeNode,value ,alpha:float
 
     return (max_pos,max_score) 
 
-
+"""
+Same idea in maximize, but with difference in inequalities and it calles maximize instead. 
+"""
 def minimize(state:np.ndarray, level:int,parent_node:TreeNode, value,alpha:float = None, beta:float= None) -> tuple:
-    global tree_list
+    global tree_list,count
+    count+=1
     node= TreeNode(-1,parent_node)
     # print(level)
     tree_list[level].append(node)
