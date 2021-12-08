@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ROUNDING_NUM= 3
+#Odd levels are Minimize, while Even are Maximize
 class TreeNode:
 
     def __init__(self, score:int, parent=None):
@@ -12,6 +13,9 @@ class TreeNode:
 
     def __str__(self) -> str:
         return f'Score:{self.score}'
+    
+def set_color_on_height(height):
+    return "red" if height%2 ==1 else "green"
 
 def draw_tree(tree_list:list): #List of levels
     #First we get maxLevel containing nodes.
@@ -26,7 +30,7 @@ def draw_tree(tree_list:list): #List of levels
     ##Now we plot the bottom first
     bottom_nodes_length= len(tree_list[max_height])
     x_s= np.arange(1,bottom_nodes_length, 1)
-    plt.scatter(x_s,np.ones_like(x_s))
+    plt.scatter(x_s,np.ones_like(x_s), color=set_color_on_height(max_height))
     count= 1
     for node in tree_list[max_height]:
         # plt.scatter(count,1, color='red')
@@ -49,7 +53,7 @@ def draw_tree(tree_list:list): #List of levels
                 tree_list[i][c].parent.children.append(point)
 
 
-        plt.scatter(x_s,np.ones_like(x_s) * (max_height - i +1) , color='red')
+        plt.scatter(x_s,np.ones_like(x_s) * (max_height - i +1) , color=set_color_on_height(i))
 
         for node in tree_list[i]:
             plt.annotate(f"{round(node.score,ROUNDING_NUM)}", (node.x,max_height - i +1),color='blue' )
