@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ROUNDING_NUM= 3
+MAX_HEIGHT_TO_PRINT= 2
 #Odd levels are Minimize, while Even are Maximize
 class TreeNode:
 
@@ -16,6 +17,9 @@ class TreeNode:
     
 def set_color_on_height(height):
     return "red" if height%2 ==1 else "green"
+def set_label_on_height(height):
+    return "Minimize" if height%2 ==1 else "Maximize"
+
 
 def draw_tree(tree_list:list): #List of levels
     #First we get maxLevel containing nodes.
@@ -25,18 +29,23 @@ def draw_tree(tree_list:list): #List of levels
         print(len(tree_list[i]))
         if len(tree_list[i]):
             max_height=i
+    max_height= min(max_height, MAX_HEIGHT_TO_PRINT)
     print(f'Max is {max_height}')
 
     ##Now we plot the bottom first
     bottom_nodes_length= len(tree_list[max_height])
-    x_s= np.arange(1,bottom_nodes_length, 1)
-    plt.scatter(x_s,np.ones_like(x_s), color=set_color_on_height(max_height))
+    x_s= np.arange(1,2*bottom_nodes_length, 2)
+    plt.scatter(x_s,np.ones_like(x_s), color=set_color_on_height(max_height) , label=set_label_on_height(max_height))
     count= 1
+    height1= 0.8
+    height2= 0.6
+    switch=True
     for node in tree_list[max_height]:
         # plt.scatter(count,1, color='red')
-        plt.annotate(f"{round(node.score,ROUNDING_NUM)}", (count, 1), color='blue')
+        plt.annotate(f"{round(node.score,ROUNDING_NUM)}", (count-1,height1 if switch else height2 ), size=5,color='blue')
+        switch= not switch
         node.x= count
-        count +=1
+        count +=2
         if node.parent is not None:
             node.parent.children.append(node.x)
     ## Now next level
@@ -53,7 +62,7 @@ def draw_tree(tree_list:list): #List of levels
                 tree_list[i][c].parent.children.append(point)
 
 
-        plt.scatter(x_s,np.ones_like(x_s) * (max_height - i +1) , color=set_color_on_height(i))
+        plt.scatter(x_s,np.ones_like(x_s) * (max_height - i +1) , color=set_color_on_height(i), label=set_label_on_height(i))
 
         for node in tree_list[i]:
             plt.annotate(f"{round(node.score,ROUNDING_NUM)}", (node.x,max_height - i +1),color='blue' )
@@ -63,6 +72,8 @@ def draw_tree(tree_list:list): #List of levels
                 plt.plot([node.x,child],[max_height - i +1,max_height - i ] , color='black')
     fig = plt.gcf()
     fig.set_size_inches(18.5, 10.5)
+    plt.ylim((0,max_height+2))
+    plt.legend()
     plt.show()
 
 if __name__ == '__main__':
