@@ -7,11 +7,11 @@ from computer import get_computer_decision,COMPUTER_VALUE, PLAYER_VALUE
 import library as lb
 import time
 
-
+#some constant we will use 
 PLAYER_TURN= 0
 COMPUTER_TURN= 1
 
-
+#diminsions of the board
 ROW_COUNT=8
 COLUMN_COUNT=8
 BLUE=(0,0,255)
@@ -19,19 +19,22 @@ BLACK=(0,0,0)
 RED=(255,0,0)
 GREEN=(0,255,0)
 YELLOW=(255,255,0)
+#some boolean variable to provide charactristics
 alpha_beta=False
 clicked=False
 tree_show=False
+#function to make the intial board
 def create_board():
     board=np.zeros((ROW_COUNT,COLUMN_COUNT), dtype=np.uint8)
     return board
-
+#function to drop the piece in it's right place 
 def drop_piece(board,col,row,piece):
     board[row][col]=piece
     pass
-
+#check if the user put it in valid location 
 def is_valid_location(board,col):
     return board[ROW_COUNT-1][col]==0
+#get the first zero in the column     
 def get_next_open_row(board,col):
     for r in range(ROW_COUNT):
         if board[r][col]==0:
@@ -45,7 +48,7 @@ def winning_move(board,piece):
     #check horizontal location for win 
     for c in range (COLUMN_COUNT):
         pass
-
+#main function of the program that draw the board on every urn it take matrix of the board and score and tree and button to show it 
 def draw_board(board,player_score,agent_score,tree_show,tree_button):
     for c in range(COLUMN_COUNT):
         for r in range(ROW_COUNT):
@@ -68,6 +71,7 @@ def draw_board(board,player_score,agent_score,tree_show,tree_button):
     screen.blit(text_agent_score, textRect_agent_score)
     pygame.draw.rect(screen, [255, 0, 0], tree_button)  # draw button
     pygame.display.update()
+    #check if we want to show the tree or not 
     if tree_show ==False:
         text_tree = font.render('Show the tree', True, GREEN, BLUE)
     else :
@@ -87,8 +91,8 @@ pygame.init()
 
 SQUARESIZE=60 #size of each square =100px
 
-width=COLUMN_COUNT*SQUARESIZE
-hight=(ROW_COUNT+1)*SQUARESIZE
+width=COLUMN_COUNT*SQUARESIZE  #width of board 
+hight=(ROW_COUNT+1)*SQUARESIZE #hight of the board and add some hight to buttons 
 size=(width,hight+120)
 radius=int(SQUARESIZE/2)
 
