@@ -189,7 +189,7 @@ tree_button = pygame.Rect(153, 610, 150, 30) #default button
 draw_board(board,0,0,tree_show,tree_button)
 pygame.display.update()
 posX= 0
-computer_k(user_text)
+computer_k(int(user_text))
 while True:
     if not game_over:
         pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
