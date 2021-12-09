@@ -3,7 +3,7 @@ from numpy.core.fromnumeric import size
 import pygame
 import sys
 import math
-from computer import get_computer_decision,COMPUTER_VALUE, PLAYER_VALUE
+from computer import get_computer_decision,COMPUTER_VALUE, PLAYER_VALUE,computer_k
 import library as lb
 import time
 
@@ -189,8 +189,8 @@ tree_button = pygame.Rect(153, 610, 150, 30) #default button
 draw_board(board,0,0,tree_show,tree_button)
 pygame.display.update()
 posX= 0
+computer_k(user_text)
 while True:
-    print(user_text)
     if not game_over:
         pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
     pygame.display.update()

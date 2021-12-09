@@ -17,7 +17,10 @@ h = heuristic(8, 8, [0, 1, 3, 6, 10])
 
 tree_list= None
 
-
+def computer_k(k):
+    global MAX_LEVEL 
+    MAX_LEVEL=k
+    
 
 def get_computer_decision(board_state:np.ndarray , is_with_pruning , show_tree:bool) -> np.int8:
     global tree_list,count
