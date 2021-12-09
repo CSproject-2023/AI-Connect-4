@@ -108,12 +108,42 @@ textRect1 = text1.get_rect()
 textRect2 = text2.get_rect()
 textRect1.center = (140, 225)
 textRect2.center = (320 , 225)
+user_text = ''
+  
+# create rectangle
+input_rect = pygame.Rect(170, 280, 140, 32)
+base_font = pygame.font.Font(None, 32)
+user_text = ''
+  
+# create rectangle
+  
+# color_active stores color(lightskyblue3) which
+# gets active when input box is clicked by user
+color_active = pygame.Color('lightskyblue3')
+  
+# color_passive store color(chartreuse4) which is
+# color of input box.
+color_passive = pygame.Color('chartreuse4')
+color = color_passive
+  
+active = False
 while not clicked:
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-
+        if event.type == pygame.KEYDOWN:
+  
+            # Check for backspace
+            if event.key == pygame.K_BACKSPACE:
+  
+                # get text input from 0 to -1 i.e. end.
+                user_text = user_text[:-1]
+  
+            # Unicode standard is used for string
+            # formation
+            else:
+                user_text += event.unicode
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = event.pos  # gets mouse position
 
@@ -130,13 +160,37 @@ while not clicked:
         screen.blit(text1, textRect1)
         screen.blit(text2, textRect2)
         pygame.display.update()
+  
+    if active:
+        color = color_active
+    else:
+        color = color_passive
+          
+    # draw rectangle and argument passed which should
+    # be on screen
+    pygame.draw.rect(screen, color, input_rect)
+  
+    text_surface = base_font.render(user_text, True, (255, 255, 255))
+      
+    # render at position stated in arguments
+    screen.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+      
+    # set width of textfield so that text cannot get
+    # outside of user's text input
+    input_rect.w = max(100, text_surface.get_width()+10)
+      
+    # display.flip() will update only a portion of the
+    # screen to updated, not full area
+    pygame.display.flip()
+
+
 tree_button = pygame.Rect(153, 610, 150, 30) #default button
 
 draw_board(board,0,0,tree_show,tree_button)
 pygame.display.update()
 posX= 0
 while True:
-
+    print(user_text)
     if not game_over:
         pygame.draw.circle(screen,RED,(posX, int(SQUARESIZE/2)), radius=radius)
     pygame.display.update()
